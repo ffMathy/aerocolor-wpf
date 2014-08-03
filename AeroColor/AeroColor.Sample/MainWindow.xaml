@@ -1,0 +1,15 @@
+﻿<Window x:Class="AeroColor.Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sample application" Height="200" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.Column="0" Fill="{DynamicResource AeroBrushLight}" />
+        <Rectangle Grid.Column="1" Fill="{DynamicResource AeroBrush}" />
+        <Rectangle Grid.Column="2" Fill="{DynamicResource AeroBrushDark}" />
+    </Grid>
+</Window>

@@ -16,12 +16,7 @@ namespace AeroColor
     {
         private static Application Application
         {
-            get { return _application; }
-            set
-            {
-                _application = value;
-                SetNewWindowForHook();
-            }
+            get { return Application.Current; }
         }
 
         private static Window Window
@@ -29,6 +24,8 @@ namespace AeroColor
             get { return _window; }
             set
             {
+                if (value == null) throw new ArgumentNullException();
+
                 if (_window != null)
                 {
                     var existingHook = (HwndSource)PresentationSource.FromVisual(_window);
@@ -53,12 +50,52 @@ namespace AeroColor
             }
         }
 
-        private static Application _application;
         private static Window _window;
 
-        public static void Initialize(Application application)
+        public static void Initialize()
         {
-            Application = application;
+            SetNewWindowForHook();
+
+            var resources = Application.Resources;
+            resources["AeroColor"] = GetCurrentAeroColor();
+
+            UpdateResourceDependencies();
+        }
+
+        private static void UpdateResourceDependencies()
+        {
+            var resources = Application.Resources;
+
+            //first work on colors.
+            var aeroColor = (Color) resources["AeroColor"];
+
+            const byte threshold = 50;
+
+            var aeroColorLight = aeroColor;
+            if (aeroColorLight.R < threshold && aeroColorLight.G < threshold && aeroColorLight.B < threshold)
+            {
+                var lowestChannelDifference = threshold - Math.Max(Math.Max(aeroColorLight.R, aeroColorLight.G), aeroColorLight.B);
+                aeroColorLight.R += (byte)lowestChannelDifference;
+                aeroColorLight.G += (byte)lowestChannelDifference;
+                aeroColorLight.B += (byte)lowestChannelDifference;
+            }
+
+            var aeroColorDark = aeroColor;
+            if (aeroColorDark.R > 255 - threshold && aeroColorDark.G > 255 - threshold && aeroColorDark.B > 255 - threshold)
+            {
+                var lowestChannelDifference = Math.Max(Math.Max(aeroColorDark.R, aeroColorDark.G), aeroColorDark.B) - (255 - threshold);
+                aeroColorDark.R -= (byte)lowestChannelDifference;
+                aeroColorDark.G -= (byte)lowestChannelDifference;
+                aeroColorDark.B -= (byte)lowestChannelDifference;
+            }
+
+            resources["AeroColorLight"] = aeroColorLight;
+            resources["AeroColorDark"] = aeroColorDark;
+
+            //set brushes.
+            resources["AeroBrushLight"] = new SolidColorBrush(aeroColorLight);
+            resources["AeroBrush"] = new SolidColorBrush(aeroColor);
+            resources["AeroBrushDark"] = new SolidColorBrush(aeroColorDark);
         }
 
         static void WindowClosed(object sender, EventArgs e)
@@ -71,8 +108,10 @@ namespace AeroColor
             foreach (Window window in Application.Windows)
             {
                 Window = window;
-                break;
+                return;
             }
+
+            Window = Application.MainWindow;
         }
 
         private static IntPtr OnWindowMessage(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam, ref bool handled)
@@ -89,20 +128,23 @@ namespace AeroColor
         {
             var resources = Application.Resources;
             resources["AeroColor"] = GetAeroColorFromNumeric((uint)newColor);
+
+            UpdateResourceDependencies();
+        }
+
+        private static Color GetCurrentAeroColor()
+        {
+            bool alphaBlend;
+            uint newColor;
+            NativeMethods.DwmGetColorizationColor(out newColor, out alphaBlend);
+
+            return GetAeroColorFromNumeric(newColor);
         }
 
         private static Color GetAeroColorFromNumeric(uint color = 0)
         {
             try
             {
-                if (color == 0)
-                {
-                    bool alphaBlend;
-                    uint newColor;
-                    NativeMethods.DwmGetColorizationColor(out newColor, out alphaBlend);
-
-                    color = newColor;
-                }
 
                 var convertedColor = Color.FromArgb((byte)((color >> 24) & 0xFF),
                                                       (byte)((color >> 16) & 0xFF),
