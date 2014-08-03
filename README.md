@@ -28,3 +28,8 @@ This line of code should be put inside your application's `LoadCompleted` event,
           AeroResourceInitializer.Initialize(this);
         }
     }
+
+#NuGet
+AeroColor is available on NuGet as well!
+
+`install-package aerocolor-wpf`
