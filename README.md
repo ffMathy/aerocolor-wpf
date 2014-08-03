@@ -17,3 +17,28 @@ The following brush resources are added, which are just solid colored brushes wi
 * AeroBrush
 * AeroBrushDark
 * AeroBrushLight
+
+#Setup code
+This line of code should be put inside your main window's `Loaded` event, or any other event that arises when the first window of your application has been created. Here's an example.
+
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            Loaded += MainWindow_Loaded;
+        }
+
+        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            AeroResourceInitializer.Initialize();
+        }
+    }
+
+#NuGet
+AeroColor is available on NuGet as well!
+
+`install-package AeroColor`
+
+`install-package AeroColor.Sample`
