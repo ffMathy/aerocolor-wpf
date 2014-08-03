@@ -17,3 +17,8 @@ The following brush resources are added, which are just solid colored brushes wi
 * AeroBrush
 * AeroBrushDark
 * AeroBrushLight
+
+#Setup code
+This line of code should be put inside your application's `LoadCompleted` event, or any other event that arises when the first window of your application has been created.
+
+`AeroResourceInitializer.Initialize(this);`
