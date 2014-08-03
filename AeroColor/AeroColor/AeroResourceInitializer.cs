@@ -24,7 +24,7 @@ namespace AeroColor
             get { return _window; }
             set
             {
-                if (value == null) throw new ArgumentNullException();
+                if (value == null) return;
 
                 if (_window != null)
                 {
