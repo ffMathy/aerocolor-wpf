@@ -33,4 +33,5 @@ This line of code should be put inside your application's `LoadCompleted` event,
 AeroColor is available on NuGet as well!
 
 `install-package AeroColor`
+
 `install-package AeroColor.Sample`
