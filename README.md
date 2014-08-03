@@ -39,6 +39,4 @@ This line of code should be put inside your main window's `Loaded` event, or any
 #NuGet
 AeroColor is available on NuGet as well!
 
-`install-package AeroColor`
-
-`install-package AeroColor.Sample`
+`install-package aerocolor-wpf`
