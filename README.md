@@ -8,9 +8,9 @@ The following resource keys are added and maintained once the Aero Color library
 
 ##Colors
 The following color resources are added.
-* AeroColor
-* AeroColorDark
-* AeroColorLight
+* AeroColor - This is the exact Aero color as-is.
+* AeroColorDark - This is the exact Aero color, only made darker if too light (good for white backgrounds).
+* AeroColorLight - This is the exact Aero color, only made lighter if too dark (good for black bacgrounds).
 
 ##Brushes
 The following brush resources are added, which are just solid colored brushes with their color counterparts as colors.
