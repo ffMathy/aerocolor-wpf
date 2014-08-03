@@ -21,9 +21,12 @@ The following brush resources are added, which are just solid colored brushes wi
 #Setup code
 This line of code should be put inside your application's `LoadCompleted` event, or any other event that arises when the first window of your application has been created. Here's an example.
 
-    protected override void OnStartup(StartupEventArgs e)
+    public partial class App : Application
     {
-        AeroResourceInitializer.Initialize(this);
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            AeroResourceInitializer.Initialize(this);
+        }
     }
 
 #NuGet
