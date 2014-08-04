@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -54,9 +55,15 @@ namespace AeroColor
 
         public static void Initialize()
         {
+            var resources = Application.Resources;
+            if (resources.Contains("AeroColor"))
+            {
+                //already initialized, so exit.
+                return;
+            }
+
             SetNewWindowForHook();
 
-            var resources = Application.Resources;
             resources["AeroColor"] = GetCurrentAeroColor();
 
             UpdateResourceDependencies();
